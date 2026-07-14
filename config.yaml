@@ -1,4 +1,4 @@
-simulate: True
+simulate: False
 
 Rbin: R
 STAR: STAR
@@ -6,36 +6,45 @@ featureCounts: featureCounts
 bedtools: bedtools
 bedGraphToBigWig: bedGraphToBigWig
 faSize: faSize
-nthreads: 2
-max_mem_mb: 20000
 
-## mind to update this to the full or relative path the git repo is cloned to
+## run limits
+nthreads: 8
+per_task_max_nthreads: 4
+per_task_max_mem:  103882211200 # not used anymore
+max_mem_mb: 350000 ## these are megabytes
+
 rock_method_path: "."
 
-working_dir: work
+working_dir: /storage2/fs1/dspencer/Active/spencerlab/projects/gata2_regulation/hsc_bd_rhapsody/rock_roi_method/BD_ROCKANDROI_GATA2_260416_RO04050/
 
-gtf: genome.gtf
-genome: genome.fa
+gtf: Ensemble105_GATA2_tso_targets_260416.gtf
+genome: /storage2/fs1/dspencer/Active/spencerlab/refdata/hg38/sequence/hg38_mgi_patch.fa
 
 # i.e. cDNA read length minus 1
-sjdbOverhang: 149
+sjdbOverhang: 150
 
 ## run mode, one of these (please see the README / docs):
 ##   'tso off- and ontarget unique'
 ##   'tso ontarget_multi'
 ##   'all'
-run_mode: 'tso off- and ontarget unique'
+run_mode: 'all' #tso off- and ontarget unique'
 
 ## GTF `source` field identifying on-target rock- or roi- features
 capture_gtf_column_2_pattern : 'captured'
 featurecounts_t: 'exon' ## feature counting unit for featurecounts
 featurecounts_g: 'gene_id' ## feature grouping unit for featurecounts
 
-## these are not used by the simulations, but must be updated with
-##   the experimental design for sequenced data
+## multimodal means they sequenced tso+wta; unimodal that only sequenced wta
 samples:
-  - name: simul
+  - name: RO04050_WTA
     uses:
-      cb_umi_fq: empty_r1.fq.gz
-      cdna_fq: empty_r2.fq.gz
-      whitelist: 384x3  ## so full CB allowedlist
+      cb_umi_fq: /storage2/fs1/dspencer/Active/spencerlab/data/work_orders/20260713_SR012021_rhapsody/fastq/LIB155776_23WJJKLT4_S1_L002_R1_001.fastq.gz
+      cdna_fq: /storage2/fs1/dspencer/Active/spencerlab/data/work_orders/20260713_SR012021_rhapsody/fastq/LIB155776_23WJJKLT4_S1_L002_R2_001.fastq.gz
+      expected_cells: 40000
+      whitelist: 384x3
+  - name: RO04050_GATA2_2604216
+    uses:
+      cb_umi_fq: /storage2/fs1/dspencer/Active/spencerlab/data/work_orders/20260713_SR012021_rhapsody/fastq/LIB155777_23WJJKLT4_S2_L002_R1_001.fastq.gz
+      cdna_fq: /storage2/fs1/dspencer/Active/spencerlab/data/work_orders/20260713_SR012021_rhapsody/fastq/LIB155777_23WJJKLT4_S2_L002_R2_001.fastq.gz
+      expected_cells: 40000
+      whitelist: 384x3

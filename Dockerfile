@@ -13,7 +13,7 @@ WORKDIR /opt/rock
 COPY ./data data/
 COPY ./ .
 
-RUN pip install snakemake pandas
+RUN pip install "pulp<2.8" snakemake pandas
 
 # STAR, subread and R packages installs
 
